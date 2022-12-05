@@ -44,13 +44,9 @@ public class ProtoDecoder {
     /// - returns: converted value Int16.
     private class func decodeInt16(fromByte: Int, data: Data) -> Int16 {
         let subData = data.subdata(in: fromByte..<fromByte + 2)
-        return subData.bytes.withUnsafeBufferPointer { pointer in
-            (
-                pointer.baseAddress!.withMemoryRebound(to: Int16.self, capacity: 1) { pointer in
-                    pointer
-                }
-            )
-        }.pointee
+        return subData.withUnsafeBytes { (pointer: UnsafeRawBufferPointer) in
+            return pointer.load(as: Int16.self)
+        }
     }
 
     /// Decode data to Int32.
@@ -58,13 +54,9 @@ public class ProtoDecoder {
     /// - parameter data: data from which need to convert.
     /// - returns: converted value Int32.
     private class func decodeInt32(fromByte: Int, toByte: Int, data: Data) -> Int32 {
-        return data.subdata(in: fromByte..<toByte).bytes.withUnsafeBufferPointer { pointer in
-            (
-                pointer.baseAddress!.withMemoryRebound(to: Int32.self, capacity: 1) { pointer in
-                    pointer
-                }
-            )
-        }.pointee
+        return data.subdata(in: fromByte..<toByte).withUnsafeBytes { (pointer: UnsafeRawBufferPointer) in
+            return pointer.load(as: Int32.self)
+        }
     }
 
     /// Decode data to Bool.
