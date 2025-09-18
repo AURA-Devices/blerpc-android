@@ -20,7 +20,8 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public class ServiceGeneratorTest {
     static final String FILE_NAME = "test_service";
-    static final String SERVICE_NAME = "TestService";
+    static final String SERVICE_NAME = "com_test_proto_TestService";
+    static final String CLASS_NAME = "TestService";
     static final String PROTO_PACKAGE = "com.test";
     static final String JAVA_PACKAGE = "com.test.proto";
     static final String SERVICE_JAVADOC = "Service javadoc.";
@@ -110,7 +111,7 @@ public class ServiceGeneratorTest {
     static final DescriptorProtos.ServiceDescriptorProto SERVICE =
             DescriptorProtos.ServiceDescriptorProto.newBuilder()
                     .setOptions(SERVICE_OPTIONS)
-                    .setName(SERVICE_NAME)
+                    .setName(CLASS_NAME)
                     .addMethod(WRITE_METHOD)
                     .addMethod(READ_METHOD)
                     .addMethod(SUBSCRIBE_METHOD)
@@ -297,7 +298,7 @@ public class ServiceGeneratorTest {
         ServiceGenerator.ServiceContext serviceContext =
                 new ServiceGenerator.ServiceContext();
         serviceContext.serviceName = SERVICE_NAME;
-        serviceContext.className = SERVICE_NAME;
+        serviceContext.className = CLASS_NAME;
         serviceContext.fileName = SERVICE_FILE_NAME;
         serviceContext.packageName = JAVA_PACKAGE;
         serviceContext.methods =

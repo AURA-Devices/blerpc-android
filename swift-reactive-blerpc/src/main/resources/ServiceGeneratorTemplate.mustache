@@ -4,10 +4,10 @@ import RxBluetoothKit
 import RxSwift
 import SwiftBleRpcLibrary
 
-/// {{serviceName}} service.
+/// {{className}} service.
 public class {{serviceName}}: BleRpcService {
     /// UUID of service.
-    public static let {{serviceName}}UUID: String = "{{serviceUUID}}"
+    public static let {{className}}UUID: String = "{{serviceUUID}}"
 {{#methods}}
     {{#typeRead}}
 
@@ -20,7 +20,7 @@ public class {{serviceName}}: BleRpcService {
 
             return try bleServiceDriver.read(
                 request: data,
-                serviceUUID: {{serviceName}}.{{serviceName}}UUID,
+                serviceUUID: {{serviceName}}.{{className}}UUID,
                 characteristicUUID: "{{characteristicUUID}}")
             .map { response in
                 try {{outputType}}.bleRpcDecode(data: response)
@@ -41,7 +41,7 @@ public class {{serviceName}}: BleRpcService {
 
             return bleServiceDriver.write(
                 request: data,
-                serviceUUID: {{serviceName}}.{{serviceName}}UUID,
+                serviceUUID: {{serviceName}}.{{className}}UUID,
                 characteristicUUID: "{{characteristicUUID}}")
             .map { response in
                 try {{outputType}}.bleRpcDecode(data: response)
@@ -62,7 +62,7 @@ public class {{serviceName}}: BleRpcService {
 
             return try bleServiceDriver.subscribe(
                 request: data,
-                serviceUUID: {{serviceName}}.{{serviceName}}UUID,
+                serviceUUID: {{serviceName}}.{{className}}UUID,
                 characteristicUUID: "{{characteristicUUID}}")
             .map { response in
                 try {{outputType}}.bleRpcDecode(data: response)

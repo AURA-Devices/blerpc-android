@@ -56,11 +56,11 @@ public class ServiceGenerator {
         int serviceNumber = fileLocation.getPath(SERVICE_NUMBER_OF_PATHS - 1);
         ServiceDescriptorProto serviceProto = protoFile.getService(serviceNumber);
         ServiceContext serviceContext = new ServiceContext();
-        serviceContext.serviceName = serviceProto.getName();
-        serviceContext.className = serviceContext.serviceName;
+        serviceContext.packageName = Common.extractPackageName(protoFile);
+        serviceContext.className = serviceProto.getName();
+        serviceContext.serviceName = fullyQualifiedName(serviceContext.packageName, serviceContext.className);
         serviceContext.fileName = serviceContext.className + OUTPUT_FILE_EXTENSION;
         serviceContext.deprecated = serviceProto.getOptions().getDeprecated();
-        serviceContext.packageName = Common.extractPackageName(protoFile);
         serviceContext.serviceUUID = serviceProto.getOptions()
                 .getExtension(Blerpc.service).getUuid();
         serviceContext.methods =
@@ -150,6 +150,11 @@ public class ServiceGenerator {
                 && location.getPath(0) == FileDescriptorProto.SERVICE_FIELD_NUMBER
                 && location.getPath(1) == serviceNumber
                 && location.getPath(2) == ServiceDescriptorProto.METHOD_FIELD_NUMBER;
+    }
+
+    private String fullyQualifiedName(String packageName, String className) {
+        return String.format("%s_%s", packageName
+                .replace(".", "_"), className);
     }
 
     /**
