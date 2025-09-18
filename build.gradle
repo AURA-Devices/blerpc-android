@@ -1,48 +1,43 @@
 buildscript {
     repositories {
-        jcenter()
-        mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
         google()
+        mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.7'
-        classpath "net.ltgt.gradle:gradle-errorprone-plugin:0.0.10"
-        classpath 'com.novoda:bintray-release:0.9.1'
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.1.RELEASE"
+        classpath 'com.android.tools.build:gradle:8.1.4'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.9.4'
+        classpath "net.ltgt.gradle:gradle-errorprone-plugin:4.2.0"
+        classpath "com.github.spotbugs:com.github.spotbugs.gradle.plugin:6.4.2"
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.7.18'
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
         mavenCentral()
-        maven { url "https://jitpack.io" }
-        maven { url "https://maven.google.com" }
         google()
+        maven { url "https://jitpack.io" }
+        gradlePluginPortal()
     }
-    tasks.withType(Javadoc) {
-        options.addStringOption('Xdoclint:none', '-quiet')
-        options.addStringOption('encoding', 'UTF-8')
+
+    tasks.withType(Javadoc).tap {
+        configureEach {
+            options.addStringOption('Xdoclint:none', '-quiet')
+            options.addStringOption('encoding', 'UTF-8')
+        }
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete layout.buildDirectory
 }
 
 project(':blerpc') {
     apply plugin: 'com.android.library'
 }
 
-ext {
-    reactivePluginVersion = '0.2.2'
-}
-
 apply from: "linters/configs/android-lint.build.gradle"
 apply from: "linters/configs/checkstyle.build.gradle"
-apply from: "linters/configs/findbugs.build.gradle"
 apply from: "linters/configs/error-prone.build.gradle"
+// TODO: restore findbugs/spotbugs checker.

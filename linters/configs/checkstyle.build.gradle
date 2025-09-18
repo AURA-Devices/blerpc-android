@@ -10,8 +10,8 @@ subprojects {
         source = fileTree('src')
         classpath = files()
         reports {
-            xml.enabled = true
-            xml.destination "${rootProject.buildDir}/linters/${project.name}.checkstyle.xml"
+            xml.required = true
+            xml.outputLocation.set(file("${rootProject.buildDir}/linters/${project.name}.checkstyle.xml"))
         }
     }
 }
